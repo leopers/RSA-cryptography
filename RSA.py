@@ -1,5 +1,5 @@
 import random
-from simpy import mod_inverse, isprime
+from sympy import mod_inverse, isprime
 
 # Implementation of RSA Cryptography
 
@@ -52,15 +52,17 @@ def generate_rsa_keys(primes, min_size):
     d = mod_inverse(e, phi_n)
     return (e, n), (d, n), (p, q)
 
+# Encryption
 def encrypt(message, public_key):
     e, n = public_key
     pre_encrypted = pre_encryption(message)
-    encrypted = [pow(char, key, n) for char in pre_encrypted]
+    encrypted = [pow(char, e, n) for char in pre_encrypted]
     return encrypted
 
+# Decryption
 def decrypt(message, private_key):
     d, n = private_key
-    decrypted = [pow(char, key, n) for char in message]
+    decrypted = [pow(char, d, n) for char in message]
 
     code_to_char = {10 + i: chr(65 + i) for i in range(26)}
     code_to_char[36] = ' '
